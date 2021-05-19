@@ -5,6 +5,11 @@ function init() {
   // Use the list of sample names to populate the select options
   d3.json("samples.json").then((data) => {
     var sampleNames = data.names;
+    let personCount = data.names.length;
+    let ageMin = d3.min(data.metadata.map(person=>person.age));
+    let ageMax = d3.max(data.metadata.map(person=>person.age));
+    let femaleCount = data.metadata.filter(person=>(person.gender === "F" || person.gender === "f")).length;
+    let maleCount = data.metadata.filter(person=>(person.gender === "M" || person.gender === "m")).length;
 
     sampleNames.forEach((sample) => {
       selector
@@ -18,11 +23,18 @@ function init() {
     selector.property("selected", firstSample);
     buildCharts(firstSample);
     buildMetadata(firstSample);
+    // Add a paragraph
+
+    d3.select("#overview").html(`This project shows top 10 bacterial species in people's belly buttons. 
+      A total of ${personCount} volunteers participated. The range of age is ${ageMin} to ${ageMax}. 
+      There are ${femaleCount} females and ${maleCount} males.`);
+
   });
 }
 
 // Initialize the dashboard
 init();
+
 
 function optionChanged(newSample) {
   // Fetch new data each time a new sample is selected
@@ -39,7 +51,6 @@ function buildMetadata(sample) {
     // Filter the data for the object with the desired sample number
     var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
     var result = resultArray[0];
-    console.log(result)
     // Use d3 to select the panel with id of `#sample-metadata`
     var PANEL = d3.select("#sample-metadata");
 

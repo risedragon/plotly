@@ -1,0 +1,10 @@
+body {
+    background-color: darkseagreen;
+}
+
+.jumbotron {
+    background-image: url("../images/david-fartek-8xxW3z31k8A-unsplash.jpg");
+    background-size: cover;
+    font-family: fantasy;
+    color: chocolate;
+}
